@@ -1,104 +1,666 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Salman Khan | Portfolio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    h1, h2 {
-      color: white;
-    }
-    .project {
-      background: white;
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #222;
-      color: white;
-      margin-top: 2rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salman Khan - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Custom animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { animation: fadeInUp 0.6s ease-out; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+        
+        /* Custom selection */
+        ::selection { background-color: #3b82f6; color: white; }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>Salman Khan</h1>
-    <p>Software Engineer | AI/ML Enthusiast | Web Developer</p>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<body class="bg-white">
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-300">
+                    Salman Khan
+                </a>
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#home" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Home</a></li>
+                    <li><a href="#about" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">About</a></li>
+                    <li><a href="#projects" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Projects</a></li>
+                    <li><a href="#contact" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Contact</a></li>
+                </ul>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-300">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden transition-all duration-300 overflow-hidden max-h-0 opacity-0">
+                <ul class="pt-4 pb-2 space-y-2">
+                    <li><a href="#home" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Home</a></li>
+                    <li><a href="#about" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">About</a></li>
+                    <li><a href="#projects" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Projects</a></li>
+                    <li><a href="#contact" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-  <div class="container">
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        Hi, I'm Salman, a 6th-semester BS Software Engineering student passionate about 
-        AI, ML, and software development. I love building real-world solutions 
-        and experimenting with new technologies.
-      </p>
+    <!-- Home Section -->
+    <section id="home" class="pt-20 pb-16 px-6 bg-gradient-to-br from-gray-50 to-white min-h-screen flex items-center">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in-up">
+                <!-- Text Content -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                            Hi, I'm 
+                            <span class="text-blue-600 relative">
+                                Salman Khan
+                                <div class="absolute -bottom-2 left-0 w-full h-1 bg-blue-600 rounded-full"></div>
+                            </span>
+                        </h1>
+                        <div class="text-2xl lg:text-3xl text-gray-600 h-12 flex items-center">
+                            <span class="mr-2">A passionate</span>
+                            <span id="role-text" class="text-blue-600 font-semibold transition-all duration-500">AI Engineer</span>
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 leading-relaxed max-w-2xl">
+                        Software Engineering student with 16+ projects in Python, web development, 
+                        and machine learning. I specialize in building AI applications and creating 
+                        innovative solutions that solve real-world problems.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#projects" class="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            View My Projects
+                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                        </a>
+                        <a href="#contact" class="inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
+                            Get In Touch
+                            <i data-lucide="mail" class="ml-2 w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Profile Image -->
+                <div class="relative">
+                    <div class="w-80 h-80 mx-auto bg-gradient-to-br from-blue-100 to-gray-100 rounded-full flex items-center justify-center shadow-2xl float-animation">
+                        <div class="text-6xl font-bold text-blue-600">SK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="project">
-        <h3>🔹 House Price Prediction</h3>
-        <p>Built a regression model with ML/DL achieving 92% accuracy.</p>
-        <a href="https://github.com/your-username/house-price-prediction" target="_blank">View on GitHub</a>
-      </div>
+    <!-- About Section -->
+    <section id="about" class="py-16 px-6 bg-white">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">About Me</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    A passionate Software Engineering student with 16+ projects in Python, 
+                    web development, and machine learning with strong problem-solving skills.
+                </p>
+            </div>
 
-      <div class="project">
-        <h3>🔹 Face Mask Detection</h3>
-        <p>Developed a real-time mask detection pipeline using CNN models.</p>
-        <a href="https://github.com/your-username/face-mask-detection" target="_blank">View on GitHub</a>
-      </div>
+            <!-- Experience -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Work Experience</h3>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="p-3 bg-green-100 rounded-full">
+                                <i data-lucide="briefcase" class="w-6 h-6 text-green-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-xl font-semibold text-gray-900">AI Engineer</h4>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Current</span>
+                                </div>
+                                <p class="text-blue-600 font-medium mb-2">DEVROLIN</p>
+                                <p class="text-gray-600 mb-3">Aug 2025 - Present</p>
+                                <p class="text-gray-600">Working on task automation and creating AI applications for automation.</p>
+                            </div>
+                        </div>
+                    </div>
 
-      <div class="project">
-        <h3>🔹 Library Management System</h3>
-        <p>A complete library system with staff and patron access using VLANs & servers.</p>
-        <a href="https://github.com/your-username/library-management" target="_blank">View on GitHub</a>
-      </div>
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="p-3 bg-blue-100 rounded-full">
+                                <i data-lucide="code" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-semibold text-gray-900">ML Intern</h4>
+                                <p class="text-blue-600 font-medium mb-2">developerhub</p>
+                                <p class="text-gray-600 mb-3">May 2025 – Aug 2025</p>
+                                <p class="text-gray-600">Completed ML/DL projects achieving 90% accuracy. Improved model performance by 25% through data analysis and feature engineering.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Technical Skills</h3>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
+                        <div class="flex flex-col items-center text-center space-y-4">
+                            <div class="p-4 bg-blue-100 rounded-full">
+                                <i data-lucide="code-2" class="w-8 h-8 text-blue-600"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900">Programming</h4>
+                            <p class="text-gray-600">Python, C/C++, PHP</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
+                        <div class="flex flex-col items-center text-center space-y-4">
+                            <div class="p-4 bg-blue-100 rounded-full">
+                                <i data-lucide="brain" class="w-8 h-8 text-blue-600"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900">Machine Learning</h4>
+                            <p class="text-gray-600">TensorFlow, Scikit-learn</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
+                        <div class="flex flex-col items-center text-center space-y-4">
+                            <div class="p-4 bg-blue-100 rounded-full">
+                                <i data-lucide="database" class="w-8 h-8 text-blue-600"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900">Databases</h4>
+                            <p class="text-gray-600">SQL, MongoDB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:youremail@gmail.com">youremail@gmail.com</a></p>
-      <p>GitHub: <a href="https://github.com/your-username" target="_blank">your-username</a></p>
-      <p>LinkedIn: <a href="https://linkedin.com/in/your-linkedin" target="_blank">LinkedIn Profile</a></p>
-    </section>
-  </div>
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">My Projects</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    A showcase of my technical expertise through 16+ projects in machine learning, 
+                    deep learning, and software development.
+                </p>
+            </div>
 
-  <footer>
-    <p>© 2025 Salman Khan | Built with ❤️ on GitHub Pages</p>
-  </footer>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+                <!-- Project 1 -->
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 relative">
+                        <div class="absolute top-4 right-4">
+                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                                <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 left-6">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Deep Learning</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-gray-900">Housing Price Prediction</h3>
+                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                                <span>92% Accuracy</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Built a multimodal deep learning model combining ResNet18 CNN with tabular data for house price prediction. Achieved 92% accuracy with 13% performance improvement.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">TensorFlow</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">ResNet18</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">CNN</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
+                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-purple-500 to-pink-500 relative">
+                        <div class="absolute top-4 right-4">
+                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                                <i data-lucide="brain" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 left-6">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Machine Learning</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-gray-900">Titanic Survival Prediction</h3>
+                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                                <span>End-to-End Pipeline</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Created a comprehensive end-to-end ML pipeline for passenger survival prediction using Scikit-learn with preprocessing, feature selection, and hyperparameter optimization.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Scikit-learn</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Random Forest</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">GridSearchCV</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
+                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-green-500 to-teal-500 relative">
+                        <div class="absolute top-4 right-4">
+                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                                <i data-lucide="eye" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 left-6">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Computer Vision</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-gray-900">Face Mask Detection</h3>
+                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                                <span>Real-time Detection</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Developed a real-time face mask detection system using CNN (VGG16) with MediaPipe integration. Implemented transfer learning and model optimization techniques.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">VGG16</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">MediaPipe</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Computer Vision</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
+                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-red-500 to-orange-500 relative">
+                        <div class="absolute top-4 right-4">
+                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                                <i data-lucide="heart" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 left-6">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Machine Learning</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-gray-900">Heart Disease Detection</h3>
+                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                                <span>88% Accuracy</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Built a heart disease prediction model using Random Forest classifier with comprehensive feature selection and data preprocessing. Achieved 88% prediction accuracy.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Random Forest</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Feature Selection</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Data Analysis</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
+                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Stats -->
+            <div class="mt-16 max-w-4xl mx-auto text-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-6 bg-blue-50 rounded-xl">
+                        <div class="text-3xl font-bold text-blue-600 mb-2">16+</div>
+                        <div class="text-gray-700 font-medium">Total Projects</div>
+                    </div>
+                    <div class="p-6 bg-green-50 rounded-xl">
+                        <div class="text-3xl font-bold text-green-600 mb-2">90%+</div>
+                        <div class="text-gray-700 font-medium">Average Accuracy</div>
+                    </div>
+                    <div class="p-6 bg-purple-50 rounded-xl">
+                        <div class="text-3xl font-bold text-purple-600 mb-2">25%</div>
+                        <div class="text-gray-700 font-medium">Performance Improvement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 bg-white">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Get In Touch</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    I'm always excited to work on new projects and collaborate with amazing teams. 
+                    Let's discuss how we can work together to bring your ideas to life.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Let's Connect</h3>
+                        <p class="text-gray-600 leading-relaxed mb-8">
+                            Whether you have a project in mind, want to collaborate, or just want to say hello, 
+                            I'd love to hear from you. I'm currently open to new opportunities.
+                        </p>
+                    </div>
+
+                    <!-- Contact Info Cards -->
+                    <div class="space-y-4">
+                        <a href="mailto:Sk1500482@gmail.com" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                            <div class="p-3 bg-white rounded-full mr-4 text-blue-600">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Email</p>
+                                <p class="text-gray-900 font-semibold">Sk1500482@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <a href="tel:+923109886166" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                            <div class="p-3 bg-white rounded-full mr-4 text-green-600">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Phone</p>
+                                <p class="text-gray-900 font-semibold">+92 310 9886166</p>
+                            </div>
+                        </a>
+
+                        <div class="flex items-center p-4 bg-gray-50 rounded-xl">
+                            <div class="p-3 bg-white rounded-full mr-4 text-red-600">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Location</p>
+                                <p class="text-gray-900 font-semibold">Peshawar, Pakistan</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-900 mb-4">Follow Me</h4>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/skd-recall" target="_blank" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-gray-700">
+                                <i data-lucide="github" class="w-6 h-6"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/salmankhanduadzai" target="_blank" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-blue-600">
+                                <i data-lucide="linkedin" class="w-6 h-6"></i>
+                            </a>
+                            <a href="mailto:Sk1500482@gmail.com" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-red-600">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Availability Status -->
+                    <div class="p-6 bg-green-50 border border-green-200 rounded-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="text-green-800 font-semibold">Available for new opportunities</span>
+                        </div>
+                        <p class="text-green-700 mt-2">
+                            Currently seeking internship and full-time positions in AI/ML and software development.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <i data-lucide="message-square" class="text-blue-600 w-7 h-7"></i>
+                        <h3 class="text-2xl font-bold text-gray-900">Send a Message</h3>
+                    </div>
+
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea id="message" name="message" required rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold mb-4">Get In Touch</h3>
+                    <div class="flex items-center space-x-3 hover:text-blue-400 transition-colors duration-300">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        <a href="mailto:Sk1500482@gmail.com" class="hover:underline">Sk1500482@gmail.com</a>
+                    </div>
+                    <div class="flex items-center space-x-3 hover:text-blue-400 transition-colors duration-300">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                        <a href="tel:+923109886166" class="hover:underline">+92 310 9886166</a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                    <div class="space-y-2">
+                        <a href="#home" class="block hover:text-blue-400 transition-colors duration-300">Home</a>
+                        <a href="#about" class="block hover:text-blue-400 transition-colors duration-300">About</a>
+                        <a href="#projects" class="block hover:text-blue-400 transition-colors duration-300">Projects</a>
+                        <a href="#contact" class="block hover:text-blue-400 transition-colors duration-300">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/skd-recall" target="_blank" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
+                            <i data-lucide="github" class="w-6 h-6"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/salmankhanduadzai" target="_blank" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="mailto:Sk1500482@gmail.com" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2025 Salman Khan. All rights reserved. Built with passion and code.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Role rotation
+        const roles = ['AI Engineer', 'ML Developer', 'Software Engineer', 'Data Scientist'];
+        let currentRole = 0;
+        const roleText = document.getElementById('role-text');
+
+        setInterval(() => {
+            currentRole = (currentRole + 1) % roles.length;
+            roleText.textContent = roles[currentRole];
+        }, 3000);
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-lg');
+                header.classList.remove('bg-transparent');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-lg');
+                header.classList.add('bg-transparent');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            if (mobileMenu.style.maxHeight === '0px' || !mobileMenu.style.maxHeight) {
+                mobileMenu.style.maxHeight = '250px';
+                mobileMenu.style.opacity = '1';
+            } else {
+                mobileMenu.style.maxHeight = '0px';
+                mobileMenu.style.opacity = '0';
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // Close mobile menu if open
+                mobileMenu.style.maxHeight = '0px';
+                mobileMenu.style.opacity = '0';
+            });
+        });
+
+        // Contact form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple form validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            if (name && email && subject && message) {
+                alert('Thank you for your message! I\\'ll get back to you soon.');
+                this.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Active navigation highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-blue-600');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-blue-600');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
