@@ -1,666 +1,932 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salman Khan - Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        /* Custom animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-up { animation: fadeInUp 0.6s ease-out; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .float-animation { animation: float 3s ease-in-out infinite; }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        /* Smooth scroll */
-        html { scroll-behavior: smooth; }
-        
-        /* Custom selection */
-        ::selection { background-color: #3b82f6; color: white; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salman Khan — AI / ML Engineer</title>
+<meta name="description" content="Salman Khan — Software Engineering student and AI/ML engineer. Computer vision, deep learning, LLM automation and real-time pose detection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --paper:#FBF8F5;
+    --ink:#17140F;
+    --ink-soft:#6E655B;
+    --ink-faint:#B8AEA2;
+    --orange:#FF5A1F;
+    --orange-deep:#C93E00;
+    --orange-pale:#FFEADB;
+    --coral:#FF3D68;
+    --amber:#FFA23D;
+    --plum:#7A2FB8;
+    --gold:#FFC93D;
+    --line:#EBE3D8;
+    --maxw:1280px;
+    --ease:cubic-bezier(.16,.84,.32,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{height:100%;margin:0;padding:0;}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.02em;}
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;}
+  ::selection{background:var(--orange);color:#fff;}
+  img{max-width:100%;display:block;}
+
+  a:focus-visible,button:focus-visible{
+    outline:2px solid var(--orange);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ===== layout / scroll-snap ===== */
+  .snap{
+    height:100vh;height:100dvh;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    scroll-snap-type:y mandatory;
+    scroll-behavior:smooth;
+  }
+  .slide{
+    height:100vh;height:100dvh;
+    width:100%;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:clamp(22px,6vh,72px) clamp(22px,6vw,96px);
+  }
+  .slide::-webkit-scrollbar{width:0;height:0;}
+  .slide.paper{background:var(--paper);}
+  .inner{width:100%;max-width:var(--maxw);margin:0 auto;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:clamp(.68rem,1.4vw,.8rem);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--orange-deep);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1.5px;background:var(--orange);display:inline-block;}
+
+  /* reveal-on-scroll */
+  [data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .slide.in-view [data-reveal]{opacity:1;transform:translateY(0);}
+  [data-reveal="1"]{transition-delay:.05s;}
+  [data-reveal="2"]{transition-delay:.15s;}
+  [data-reveal="3"]{transition-delay:.25s;}
+  [data-reveal="4"]{transition-delay:.35s;}
+  [data-reveal="5"]{transition-delay:.45s;}
+
+  /* ===== brand / nav ===== */
+  .brand{
+    position:fixed;top:0;left:0;z-index:40;
+    padding:clamp(18px,3vh,28px) clamp(20px,4vw,40px);
+    font-family:'JetBrains Mono',monospace;
+    font-size:.8rem;letter-spacing:.06em;
+    display:flex;align-items:center;gap:8px;
+    mix-blend-mode:normal;
+  }
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block;box-shadow:0 0 0 4px var(--orange-pale);}
+
+  .dotnav{
+    position:fixed;top:50%;right:clamp(16px,3vw,36px);transform:translateY(-50%);
+    z-index:40;display:flex;flex-direction:column;gap:16px;align-items:flex-end;
+  }
+  .dotnav button{display:flex;align-items:center;gap:10px;}
+  .dotnav .label{
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-soft);opacity:0;transform:translateX(6px);
+    transition:opacity .25s var(--ease),transform .25s var(--ease);white-space:nowrap;
+  }
+  .dotnav button:hover .label,.dotnav button:focus-visible .label{opacity:1;transform:translateX(0);}
+  .dotnav .pip{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ink-faint);transition:all .25s var(--ease);}
+  .dotnav button.active .pip{background:var(--orange);border-color:var(--orange);transform:scale(1.35);}
+  .dotnav button.active .label{color:var(--ink);opacity:1;}
+
+  /* ===== hero ===== */
+  .hero{padding-top:clamp(70px,10vh,90px);}
+  .hero .inner{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,48px);align-items:center;}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);line-height:.98;font-weight:700;}
+  .hero h1 span{
+    background:linear-gradient(100deg,var(--orange) 10%,var(--coral) 55%,var(--gold) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .lede{margin-top:clamp(14px,2vh,20px);font-size:clamp(1rem,1.6vw,1.2rem);color:var(--ink-soft);max-width:44ch;line-height:1.55;}
+  .hero .stats{margin-top:clamp(18px,3vh,28px);display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,32px);}
+  .hero .stats .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(1.3rem,2.4vw,1.7rem);}
+  .hero .stats .stat span{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .cta-row{margin-top:clamp(22px,4vh,34px);display:flex;flex-wrap:wrap;gap:14px;}
+  .btn{
+    padding:14px 26px;border-radius:999px;font-weight:600;font-size:.92rem;
+    display:inline-flex;align-items:center;gap:8px;transition:all .25s var(--ease);
+  }
+  .btn.primary{background:var(--ink);color:#fff;}
+  .btn.primary:hover{background:var(--orange);transform:translateY(-2px);}
+  .btn.ghost{border:1.5px solid var(--line);color:var(--ink);}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange-deep);transform:translateY(-2px);}
+
+  .hero-visual{position:relative;aspect-ratio:1/1.05;width:100%;max-height:64vh;}
+  #poseCanvas{width:100%;height:100%;display:block;position:relative;z-index:2;}
+
+  /* ambient gradient blobs behind hero */
+  .blobs{position:absolute;inset:-20%;z-index:1;overflow:hidden;pointer-events:none;filter:blur(50px);opacity:.65;}
+  .blob{position:absolute;border-radius:50%;mix-blend-mode:multiply;}
+  .blob.b1{width:46%;height:46%;top:2%;left:8%;background:radial-gradient(circle,var(--amber),transparent 70%);animation:drift1 16s ease-in-out infinite;}
+  .blob.b2{width:52%;height:52%;bottom:0;right:2%;background:radial-gradient(circle,var(--coral),transparent 70%);animation:drift2 19s ease-in-out infinite;}
+  .blob.b3{width:38%;height:38%;bottom:12%;left:20%;background:radial-gradient(circle,var(--gold),transparent 70%);animation:drift3 14s ease-in-out infinite;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(6%,8%) scale(1.15);}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-8%,-6%) scale(1.1);}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(5%,-9%) scale(1.2);}}
+
+  /* top scroll-progress bar */
+  .progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:60;
+    background:linear-gradient(90deg,var(--gold),var(--orange),var(--coral));
+    transition:width .12s linear;}
+
+  .scrollcue{
+    position:absolute;left:50%;bottom:clamp(14px,3vh,26px);transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .scrollcue .chev{animation:bob 1.8s ease-in-out infinite;font-size:.9rem;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  /* ===== section headers ===== */
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:clamp(24px,4vh,44px);flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(1.9rem,4vw,3rem);font-weight:700;position:relative;display:inline-block;}
+  .sec-head h2::after{content:'';position:absolute;left:2px;bottom:-8px;height:5px;width:52px;border-radius:4px;
+    background:linear-gradient(90deg,var(--accent,var(--orange)),var(--accent2,var(--coral)));}
+  .sec-num{font-family:'JetBrains Mono',monospace;color:var(--ink-faint);font-size:.8rem;}
+  #about{--accent:var(--amber);--accent2:var(--orange);}
+  #experience{--accent:var(--coral);--accent2:var(--plum);}
+  #featured{--accent:var(--orange);--accent2:var(--gold);}
+  #projects{--accent:var(--plum);--accent2:var(--coral);}
+
+  /* ===== about ===== */
+  .about-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(30px,5vw,64px);align-items:start;}
+  .about-bio p{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--ink-soft);line-height:1.65;}
+  .about-bio p + p{margin-top:14px;}
+  .cert-list{margin-top:24px;display:flex;flex-direction:column;gap:8px;}
+  .cert-list li{list-style:none;font-size:.86rem;color:var(--ink-soft);display:flex;gap:10px;}
+  .cert-list li::before{content:'—';color:var(--orange);}
+
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .skill-card{
+    border:1px solid var(--line);border-left:3px solid var(--accent,var(--orange));border-radius:16px;padding:18px 20px;background:var(--white);
+    transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease);
+  }
+  .skill-card:hover{border-color:var(--accent,var(--orange));border-left-color:var(--accent,var(--orange));transform:translateY(-3px);box-shadow:0 12px 28px -18px var(--accent,var(--orange));}
+  .skill-card h3{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--accent-deep,var(--orange-deep));font-weight:500;margin-bottom:10px;}
+  .skill-card p{font-size:.92rem;color:var(--ink);line-height:1.5;}
+  .skill-card:nth-child(1){--accent:var(--orange);--accent-deep:var(--orange-deep);}
+  .skill-card:nth-child(2){--accent:var(--coral);--accent-deep:#C21C46;}
+  .skill-card:nth-child(3){--accent:var(--amber);--accent-deep:#C97300;}
+  .skill-card:nth-child(4){--accent:var(--plum);--accent-deep:#5B2189;}
+  .skill-card:nth-child(5){--accent:var(--gold);--accent-deep:#B48A00;}
+  .skill-card:nth-child(6){--accent:var(--orange);--accent-deep:var(--orange-deep);}
+
+  /* ===== experience timeline ===== */
+  .timeline{position:relative;padding-left:clamp(24px,4vw,44px);}
+  .timeline::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:1.5px;background:var(--line);}
+  .tl-item{position:relative;padding-bottom:clamp(20px,4vh,34px);}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{content:'';position:absolute;left:calc(-1*clamp(24px,4vw,44px));top:6px;width:11px;height:11px;border-radius:50%;background:var(--white);border:2px solid var(--orange);transform:translateX(calc(clamp(24px,4vw,44px) - 5.5px));}
+  .tl-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;}
+  .tl-role{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.05rem,2vw,1.3rem);font-weight:700;}
+  .tl-org{color:var(--orange-deep);font-weight:600;}
+  .tl-date{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--ink-faint);white-space:nowrap;}
+  .tl-desc{margin-top:6px;color:var(--ink-soft);font-size:.94rem;line-height:1.55;max-width:62ch;}
+
+  /* ===== featured project ===== */
+  .featured-card{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,56px);align-items:center;
+    border:1px solid var(--line);border-radius:24px;background:var(--white);padding:clamp(24px,4vw,48px);
+    transition:transform .3s var(--ease),box-shadow .3s var(--ease);will-change:transform;
+  }
+  .featured-card:hover{box-shadow:0 24px 60px -30px var(--orange);}
+  .featured-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;background:var(--orange-pale);color:var(--orange-deep);padding:6px 12px;border-radius:999px;}
+  .featured-card h3{margin-top:14px;font-size:clamp(1.5rem,3vw,2.1rem);}
+  .featured-card .desc{margin-top:14px;color:var(--ink-soft);font-size:.98rem;line-height:1.6;}
+  .chip-row{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);}
+  .chip.c-orange{background:var(--orange-pale);border-color:transparent;color:var(--orange-deep);}
+  .chip.c-coral{background:#FFE2E9;border-color:transparent;color:#C21C46;}
+  .chip.c-amber{background:#FFEBD2;border-color:transparent;color:#C97300;}
+  .chip.c-plum{background:#F0E2FA;border-color:transparent;color:#5B2189;}
+  .chip.c-gold{background:#FFF3CC;border-color:transparent;color:#B48A00;}
+
+  .p-meta{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+  .p-meta .row{font-size:.82rem;line-height:1.5;}
+  .p-meta .row b{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-deep,var(--orange-deep));display:block;margin-bottom:2px;}
+  .p-meta .row span{color:var(--ink-soft);}
+  .stat-strip{display:flex;flex-wrap:wrap;gap:14px 26px;margin-top:6px;}
+  .stat-strip .s b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.15rem;}
+  .stat-strip .s span{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .featured-links{margin-top:22px;display:flex;gap:14px;}
+  .featured-links a{display:inline-flex;align-items:center;gap:8px;font-size:.86rem;font-weight:600;color:var(--ink);}
+  .featured-links a:hover{color:var(--orange);}
+  .featured-links svg{width:16px;height:16px;}
+
+  .fyp-visual{position:relative;border-radius:18px;background:linear-gradient(160deg,var(--orange-pale),var(--white) 70%);aspect-ratio:1/0.95;overflow:hidden;border:1px solid var(--line);}
+  .fyp-visual svg{position:absolute;inset:0;width:100%;height:100%;}
+
+  /* ===== other projects (carousel) ===== */
+  .carousel-wrap{position:relative;}
+  .carousel{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .carousel::-webkit-scrollbar{display:none;}
+  .pcard{
+    scroll-snap-align:start;flex:0 0 clamp(272px,78vw,400px);
+    border:1px solid var(--line);border-top:4px solid var(--accent,var(--orange));border-radius:20px;padding:22px;background:var(--paper);
+    display:flex;flex-direction:column;gap:10px;min-height:clamp(300px,52vh,420px);max-height:60vh;overflow-y:auto;
+    transition:transform .3s var(--ease),box-shadow .3s var(--ease);will-change:transform;
+  }
+  .pcard:hover{box-shadow:0 20px 40px -24px var(--accent,var(--orange));}
+  .pcard .pnum{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--accent-deep,var(--orange-deep));}
+  .pcard h3{font-size:1.1rem;}
+  .pcard > p{color:var(--ink-soft);font-size:.85rem;line-height:1.5;}
+  .pcard .chip-row{margin-top:2px;}
+  .pcard:nth-child(1){--accent:var(--plum);--accent-deep:#5B2189;}
+  .pcard:nth-child(2){--accent:var(--orange);--accent-deep:var(--orange-deep);}
+  .pcard:nth-child(3){--accent:var(--coral);--accent-deep:#C21C46;}
+  .pcard:nth-child(4){--accent:var(--amber);--accent-deep:#C97300;}
+  .pcard:nth-child(5){--accent:var(--gold);--accent-deep:#B48A00;}
+  .carousel-controls{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+  .carousel-btns{display:flex;gap:10px;}
+  .cbtn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;transition:all .2s var(--ease);}
+  .cbtn:hover{border-color:var(--orange);color:var(--orange);}
+  .cbtn svg{width:16px;height:16px;}
+  .carousel-count{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--ink-soft);}
+
+  /* ===== contact ===== */
+  .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,64px);align-items:center;}
+  .contact-grid h2{font-size:clamp(2.2rem,5vw,3.6rem);}
+  .contact-grid .lede{margin-top:16px;color:var(--ink-soft);font-size:clamp(1rem,1.5vw,1.1rem);max-width:46ch;line-height:1.6;}
+  .contact-list{display:flex;flex-direction:column;gap:10px;}
+  .contact-row{
+    display:flex;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;
+    background:var(--white);transition:all .2s var(--ease);
+  }
+  .contact-row:hover{border-color:var(--orange);transform:translateX(4px);}
+  .contact-row .ic{width:38px;height:38px;border-radius:10px;background:var(--orange-pale);color:var(--orange-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .contact-row .ic svg{width:18px;height:18px;}
+  .contact-row .t{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-family:'JetBrains Mono',monospace;}
+  .contact-row .v{font-weight:600;font-size:.95rem;}
+  .social-row{margin-top:22px;display:flex;gap:12px;}
+  .social-row a{width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;transition:all .25s var(--ease);}
+  .social-row a:hover{background:var(--orange);transform:translateY(-3px);}
+  .social-row svg{width:19px;height:19px;}
+  .footer-note{margin-top:clamp(26px,5vh,44px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--ink-faint);border-top:1px solid var(--line);padding-top:18px;}
+
+  .avail{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:#1F7A3D;background:#EAF7EE;padding:8px 14px;border-radius:999px;margin-bottom:18px;}
+  .avail .pulse{width:7px;height:7px;border-radius:50%;background:#1F7A3D;box-shadow:0 0 0 0 rgba(31,122,61,.5);animation:pulse 2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,122,61,.45);}70%{box-shadow:0 0 0 8px rgba(31,122,61,0);}100%{box-shadow:0 0 0 0 rgba(31,122,61,0);}}
+
+  /* ===== responsive ===== */
+  @media (max-width:900px){
+    .dotnav{top:auto;bottom:14px;right:50%;transform:translateX(50%);flex-direction:row;gap:12px;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);padding:10px 14px;border-radius:999px;border:1px solid var(--line);}
+    .dotnav .label{display:none;}
+    .hero{padding-top:clamp(64px,12vh,90px);}
+    .hero .inner{grid-template-columns:1fr;text-align:left;}
+    .hero-visual{max-height:30vh;order:-1;margin:0 auto 8px;max-width:280px;}
+    .about-grid{grid-template-columns:1fr;gap:26px;}
+    .skill-grid{grid-template-columns:1fr 1fr;}
+    .featured-card{grid-template-columns:1fr;}
+    .fyp-visual{order:-1;max-height:26vh;}
+    .contact-grid{grid-template-columns:1fr;}
+    .contact-grid .fyp-visual{display:none;}
+  }
+  @media (max-width:560px){
+    .skill-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:clamp(2.2rem,9vw,3rem);}
+    .brand{font-size:.7rem;}
+  }
+  @media (max-height:680px){
+    .slide{padding-top:clamp(56px,9vh,70px);padding-bottom:16px;}
+    .hero-visual{max-height:22vh;}
+    .scrollcue{display:none;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+    .snap{scroll-behavior:auto;}
+  }
+</style>
 </head>
-<body class="bg-white">
-    <!-- Header -->
-    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-        <nav class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="#home" class="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-300">
-                    Salman Khan
-                </a>
-                <ul class="hidden md:flex space-x-8">
-                    <li><a href="#home" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Home</a></li>
-                    <li><a href="#about" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">About</a></li>
-                    <li><a href="#projects" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Projects</a></li>
-                    <li><a href="#contact" class="nav-link text-sm font-medium transition-colors duration-300 hover:text-blue-600 text-gray-700">Contact</a></li>
-                </ul>
-                <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-300">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden transition-all duration-300 overflow-hidden max-h-0 opacity-0">
-                <ul class="pt-4 pb-2 space-y-2">
-                    <li><a href="#home" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Home</a></li>
-                    <li><a href="#about" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">About</a></li>
-                    <li><a href="#projects" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Projects</a></li>
-                    <li><a href="#contact" class="block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-blue-600 text-gray-700">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <!-- Home Section -->
-    <section id="home" class="pt-20 pb-16 px-6 bg-gradient-to-br from-gray-50 to-white min-h-screen flex items-center">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in-up">
-                <!-- Text Content -->
-                <div class="space-y-8">
-                    <div class="space-y-4">
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                            Hi, I'm 
-                            <span class="text-blue-600 relative">
-                                Salman Khan
-                                <div class="absolute -bottom-2 left-0 w-full h-1 bg-blue-600 rounded-full"></div>
-                            </span>
-                        </h1>
-                        <div class="text-2xl lg:text-3xl text-gray-600 h-12 flex items-center">
-                            <span class="mr-2">A passionate</span>
-                            <span id="role-text" class="text-blue-600 font-semibold transition-all duration-500">AI Engineer</span>
-                        </div>
-                    </div>
-                    <p class="text-lg text-gray-600 leading-relaxed max-w-2xl">
-                        Software Engineering student with 16+ projects in Python, web development, 
-                        and machine learning. I specialize in building AI applications and creating 
-                        innovative solutions that solve real-world problems.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#projects" class="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                            View My Projects
-                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
-                        </a>
-                        <a href="#contact" class="inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
-                            Get In Touch
-                            <i data-lucide="mail" class="ml-2 w-5 h-5"></i>
-                        </a>
-                    </div>
-                </div>
-                <!-- Profile Image -->
-                <div class="relative">
-                    <div class="w-80 h-80 mx-auto bg-gradient-to-br from-blue-100 to-gray-100 rounded-full flex items-center justify-center shadow-2xl float-animation">
-                        <div class="text-6xl font-bold text-blue-600">SK</div>
-                    </div>
-                </div>
-            </div>
+<div class="progress-bar" id="progressBar"></div>
+<a class="brand" href="#hero"><span class="dot"></span>SALMAN&nbsp;KHAN</a>
+
+<nav class="dotnav" aria-label="Section navigation">
+  <button data-target="hero" class="active"><span class="label">Home</span><span class="pip"></span></button>
+  <button data-target="about"><span class="label">About</span><span class="pip"></span></button>
+  <button data-target="experience"><span class="label">Experience</span><span class="pip"></span></button>
+  <button data-target="featured"><span class="label">Featured</span><span class="pip"></span></button>
+  <button data-target="projects"><span class="label">Projects</span><span class="pip"></span></button>
+  <button data-target="contact"><span class="label">Contact</span><span class="pip"></span></button>
+</nav>
+
+<main class="snap" id="snap">
+
+  <!-- HERO -->
+  <section id="hero" class="slide hero">
+    <div class="inner">
+      <div class="hero-text">
+        <p class="eyebrow" data-reveal="1">AI / ML Engineer — Software Engineering Student</p>
+        <h1 data-reveal="2">Salman<br><span>Khan.</span></h1>
+        <p class="lede" data-reveal="3">I build intelligent software that learns, automates, and scales—from AI agents and LLM applications to production-ready ML systems.</p>
+        <div class="stats" data-reveal="4">
+          <div class="stat"><b><span class="cnum" data-count="16">0</span>+</b><span>Projects Shipped</span></div>
+          <div class="stat"><b><span class="cnum" data-count="2">0</span>+ yrs</b><span>Machine Learning</span></div>
+          <div class="stat"><b><span class="cnum" data-count="90">0</span>%+</b><span>Avg. Model Accuracy</span></div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-16 px-6 bg-white">
-        <div class="container mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">About Me</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    A passionate Software Engineering student with 16+ projects in Python, 
-                    web development, and machine learning with strong problem-solving skills.
-                </p>
-            </div>
-
-            <!-- Experience -->
-            <div class="mb-16">
-                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Work Experience</h3>
-                <div class="max-w-4xl mx-auto space-y-8">
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
-                        <div class="flex items-start space-x-4">
-                            <div class="p-3 bg-green-100 rounded-full">
-                                <i data-lucide="briefcase" class="w-6 h-6 text-green-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-xl font-semibold text-gray-900">AI Engineer</h4>
-                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Current</span>
-                                </div>
-                                <p class="text-blue-600 font-medium mb-2">DEVROLIN</p>
-                                <p class="text-gray-600 mb-3">Aug 2025 - Present</p>
-                                <p class="text-gray-600">Working on task automation and creating AI applications for automation.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
-                        <div class="flex items-start space-x-4">
-                            <div class="p-3 bg-blue-100 rounded-full">
-                                <i data-lucide="code" class="w-6 h-6 text-blue-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="text-xl font-semibold text-gray-900">ML Intern</h4>
-                                <p class="text-blue-600 font-medium mb-2">developerhub</p>
-                                <p class="text-gray-600 mb-3">May 2025 – Aug 2025</p>
-                                <p class="text-gray-600">Completed ML/DL projects achieving 90% accuracy. Improved model performance by 25% through data analysis and feature engineering.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Skills -->
-            <div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Technical Skills</h3>
-                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-                        <div class="flex flex-col items-center text-center space-y-4">
-                            <div class="p-4 bg-blue-100 rounded-full">
-                                <i data-lucide="code-2" class="w-8 h-8 text-blue-600"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold text-gray-900">Programming</h4>
-                            <p class="text-gray-600">Python, C/C++, PHP</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-                        <div class="flex flex-col items-center text-center space-y-4">
-                            <div class="p-4 bg-blue-100 rounded-full">
-                                <i data-lucide="brain" class="w-8 h-8 text-blue-600"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold text-gray-900">Machine Learning</h4>
-                            <p class="text-gray-600">TensorFlow, Scikit-learn</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-6 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-                        <div class="flex flex-col items-center text-center space-y-4">
-                            <div class="p-4 bg-blue-100 rounded-full">
-                                <i data-lucide="database" class="w-8 h-8 text-blue-600"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold text-gray-900">Databases</h4>
-                            <p class="text-gray-600">SQL, MongoDB</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="cta-row" data-reveal="5">
+          <a href="#featured" class="btn primary">View my work</a>
+          <a href="#contact" class="btn ghost">Get in touch</a>
         </div>
-    </section>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="blobs"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+        <canvas id="poseCanvas"></canvas>
+      </div>
+    </div>
+    <div class="scrollcue">Scroll<span class="chev">⌄</span></div>
+  </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-16 px-6 bg-gray-50">
-        <div class="container mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">My Projects</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    A showcase of my technical expertise through 16+ projects in machine learning, 
-                    deep learning, and software development.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-                <!-- Project 1 -->
-                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
-                    <div class="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 relative">
-                        <div class="absolute top-4 right-4">
-                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-                                <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-4 left-6">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Deep Learning</span>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="text-2xl font-bold text-gray-900">Housing Price Prediction</h3>
-                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
-                                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                                <span>92% Accuracy</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 leading-relaxed mb-6">
-                            Built a multimodal deep learning model combining ResNet18 CNN with tabular data for house price prediction. Achieved 92% accuracy with 13% performance improvement.
-                        </p>
-                        <div class="mb-6">
-                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">TensorFlow</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">ResNet18</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">CNN</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
-                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
-                                View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
-                    <div class="h-32 bg-gradient-to-r from-purple-500 to-pink-500 relative">
-                        <div class="absolute top-4 right-4">
-                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-                                <i data-lucide="brain" class="w-6 h-6 text-white"></i>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-4 left-6">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Machine Learning</span>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="text-2xl font-bold text-gray-900">Titanic Survival Prediction</h3>
-                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
-                                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                                <span>End-to-End Pipeline</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 leading-relaxed mb-6">
-                            Created a comprehensive end-to-end ML pipeline for passenger survival prediction using Scikit-learn with preprocessing, feature selection, and hyperparameter optimization.
-                        </p>
-                        <div class="mb-6">
-                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Scikit-learn</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Random Forest</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">GridSearchCV</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
-                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
-                                View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
-                    <div class="h-32 bg-gradient-to-r from-green-500 to-teal-500 relative">
-                        <div class="absolute top-4 right-4">
-                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-                                <i data-lucide="eye" class="w-6 h-6 text-white"></i>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-4 left-6">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Computer Vision</span>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="text-2xl font-bold text-gray-900">Face Mask Detection</h3>
-                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
-                                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                                <span>Real-time Detection</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 leading-relaxed mb-6">
-                            Developed a real-time face mask detection system using CNN (VGG16) with MediaPipe integration. Implemented transfer learning and model optimization techniques.
-                        </p>
-                        <div class="mb-6">
-                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">VGG16</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">MediaPipe</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Computer Vision</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
-                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
-                                View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden">
-                    <div class="h-32 bg-gradient-to-r from-red-500 to-orange-500 relative">
-                        <div class="absolute top-4 right-4">
-                            <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-                                <i data-lucide="heart" class="w-6 h-6 text-white"></i>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-4 left-6">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">Machine Learning</span>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="text-2xl font-bold text-gray-900">Heart Disease Detection</h3>
-                            <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
-                                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                                <span>88% Accuracy</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 leading-relaxed mb-6">
-                            Built a heart disease prediction model using Random Forest classifier with comprehensive feature selection and data preprocessing. Achieved 88% prediction accuracy.
-                        </p>
-                        <div class="mb-6">
-                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Python</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Random Forest</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Feature Selection</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Data Analysis</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/skd-recall" class="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300">
-                                <i data-lucide="github" class="w-4 h-4 mr-2"></i>
-                                View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Stats -->
-            <div class="mt-16 max-w-4xl mx-auto text-center">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="p-6 bg-blue-50 rounded-xl">
-                        <div class="text-3xl font-bold text-blue-600 mb-2">16+</div>
-                        <div class="text-gray-700 font-medium">Total Projects</div>
-                    </div>
-                    <div class="p-6 bg-green-50 rounded-xl">
-                        <div class="text-3xl font-bold text-green-600 mb-2">90%+</div>
-                        <div class="text-gray-700 font-medium">Average Accuracy</div>
-                    </div>
-                    <div class="p-6 bg-purple-50 rounded-xl">
-                        <div class="text-3xl font-bold text-purple-600 mb-2">25%</div>
-                        <div class="text-gray-700 font-medium">Performance Improvement</div>
-                    </div>
-                </div>
-            </div>
+  <!-- ABOUT -->
+  <section id="about" class="slide paper">
+    <div class="inner">
+      <div class="sec-head" data-reveal="1">
+        <h2>About</h2>
+        <span class="sec-num mono">01 / Profile</span>
+      </div>
+      <div class="about-grid">
+        <div class="about-bio" data-reveal="2">
+          <p>I'm a final-year Software Engineering student at CECOS University, Peshawar, with two years of hands-on machine learning experience — mostly self-taught, all shipped. I care about the part after the notebook: turning a working model into a real, usable product.</p>
+          <p>My work spans computer vision, deep learning and — more recently — LLM-based automation and RAG pipelines. Off-screen: gaming, exploring, and driving.</p>
+          <ul class="cert-list">
+            <li>Python Programming Certificate — upGrad</li>
+            <li>Solving Problems with Creative &amp; Critical Thinking — IBM</li>
+            <li>Deep Learning: Getting Started — LinkedIn Learning</li>
+          </ul>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 px-6 bg-white">
-        <div class="container mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Get In Touch</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    I'm always excited to work on new projects and collaborate with amazing teams. 
-                    Let's discuss how we can work together to bring your ideas to life.
-                </p>
-            </div>
-
-            <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <!-- Contact Information -->
-                <div class="space-y-8">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Let's Connect</h3>
-                        <p class="text-gray-600 leading-relaxed mb-8">
-                            Whether you have a project in mind, want to collaborate, or just want to say hello, 
-                            I'd love to hear from you. I'm currently open to new opportunities.
-                        </p>
-                    </div>
-
-                    <!-- Contact Info Cards -->
-                    <div class="space-y-4">
-                        <a href="mailto:Sk1500482@gmail.com" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
-                            <div class="p-3 bg-white rounded-full mr-4 text-blue-600">
-                                <i data-lucide="mail" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 font-medium">Email</p>
-                                <p class="text-gray-900 font-semibold">Sk1500482@gmail.com</p>
-                            </div>
-                        </a>
-
-                        <a href="tel:+923109886166" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
-                            <div class="p-3 bg-white rounded-full mr-4 text-green-600">
-                                <i data-lucide="phone" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 font-medium">Phone</p>
-                                <p class="text-gray-900 font-semibold">+92 310 9886166</p>
-                            </div>
-                        </a>
-
-                        <div class="flex items-center p-4 bg-gray-50 rounded-xl">
-                            <div class="p-3 bg-white rounded-full mr-4 text-red-600">
-                                <i data-lucide="map-pin" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 font-medium">Location</p>
-                                <p class="text-gray-900 font-semibold">Peshawar, Pakistan</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Links -->
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-900 mb-4">Follow Me</h4>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/skd-recall" target="_blank" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-gray-700">
-                                <i data-lucide="github" class="w-6 h-6"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/salmankhanduadzai" target="_blank" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-blue-600">
-                                <i data-lucide="linkedin" class="w-6 h-6"></i>
-                            </a>
-                            <a href="mailto:Sk1500482@gmail.com" class="p-4 bg-gray-800 text-white rounded-xl transition-all duration-300 transform hover:scale-110 hover:bg-red-600">
-                                <i data-lucide="mail" class="w-6 h-6"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Availability Status -->
-                    <div class="p-6 bg-green-50 border border-green-200 rounded-xl">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                            <span class="text-green-800 font-semibold">Available for new opportunities</span>
-                        </div>
-                        <p class="text-green-700 mt-2">
-                            Currently seeking internship and full-time positions in AI/ML and software development.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="bg-gray-50 p-8 rounded-2xl">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <i data-lucide="message-square" class="text-blue-600 w-7 h-7"></i>
-                        <h3 class="text-2xl font-bold text-gray-900">Send a Message</h3>
-                    </div>
-
-                    <form id="contact-form" class="space-y-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                            <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                            <textarea id="message" name="message" required rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
+        <div class="skill-grid" data-reveal="3">
+          <div class="skill-card"><h3>Languages</h3><p>Python, C / C++, PHP</p></div>
+          <div class="skill-card"><h3>ML / DL</h3><p>Supervised learning, classification, regression, CNNs, transfer learning, RAG &amp; LLMs</p></div>
+          <div class="skill-card"><h3>Frameworks</h3><p>TensorFlow, Scikit-learn, Pandas, NumPy, MediaPipe</p></div>
+          <div class="skill-card"><h3>Data &amp; infra</h3><p>SQL, MongoDB, FastAPI, Git</p></div>
+          <div class="skill-card"><h3>Automation</h3><p>n8n workflows, LLM tooling, task automation</p></div>
+          <div class="skill-card"><h3>Human languages</h3><p>English, Urdu, Pashto</p></div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Contact Info -->
-                <div class="space-y-4">
-                    <h3 class="text-xl font-semibold mb-4">Get In Touch</h3>
-                    <div class="flex items-center space-x-3 hover:text-blue-400 transition-colors duration-300">
-                        <i data-lucide="mail" class="w-5 h-5"></i>
-                        <a href="mailto:Sk1500482@gmail.com" class="hover:underline">Sk1500482@gmail.com</a>
-                    </div>
-                    <div class="flex items-center space-x-3 hover:text-blue-400 transition-colors duration-300">
-                        <i data-lucide="phone" class="w-5 h-5"></i>
-                        <a href="tel:+923109886166" class="hover:underline">+92 310 9886166</a>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="space-y-4">
-                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
-                    <div class="space-y-2">
-                        <a href="#home" class="block hover:text-blue-400 transition-colors duration-300">Home</a>
-                        <a href="#about" class="block hover:text-blue-400 transition-colors duration-300">About</a>
-                        <a href="#projects" class="block hover:text-blue-400 transition-colors duration-300">Projects</a>
-                        <a href="#contact" class="block hover:text-blue-400 transition-colors duration-300">Contact</a>
-                    </div>
-                </div>
-
-                <!-- Social Links -->
-                <div class="space-y-4">
-                    <h3 class="text-xl font-semibold mb-4">Connect</h3>
-                    <div class="flex space-x-4">
-                        <a href="https://github.com/skd-recall" target="_blank" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
-                            <i data-lucide="github" class="w-6 h-6"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/salmankhanduadzai" target="_blank" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
-                            <i data-lucide="linkedin" class="w-6 h-6"></i>
-                        </a>
-                        <a href="mailto:Sk1500482@gmail.com" class="p-3 bg-gray-800 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
-                            <i data-lucide="mail" class="w-6 h-6"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-400">
-                    © 2025 Salman Khan. All rights reserved. Built with passion and code.
-                </p>
-            </div>
+  <!-- EXPERIENCE -->
+  <section id="experience" class="slide">
+    <div class="inner">
+      <div class="sec-head" data-reveal="1">
+        <h2>Experience</h2>
+        <span class="sec-num mono">02 / Timeline</span>
+      </div>
+      <div class="timeline" data-reveal="2">
+        <div class="tl-item">
+          <div class="tl-row"><span class="tl-role">AI Engineer <span class="tl-org">— DevRolin</span></span><span class="tl-date mono">AUG 2025 – JAN 2026</span></div>
+          <p class="tl-desc">Worked as an AI engineer building with LLMs and RAG, and automating workflows with tools like n8n. Delivered 10+ projects, leading 3 of them end to end.</p>
         </div>
-    </footer>
+        <div class="tl-item">
+          <div class="tl-row"><span class="tl-role">ML Intern <span class="tl-org">— DeveloperHub</span></span><span class="tl-date mono">MAY 2025 – AUG 2025</span></div>
+          <p class="tl-desc">Completed ML/DL projects including house price prediction and heart disease detection, applying data analysis, feature engineering and fine-tuning to lift performance by 25%.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-row"><span class="tl-role">Python &amp; Web Intern <span class="tl-org">— P92 IT Solutions</span></span><span class="tl-date mono">OCT 2021 – AUG 2022</span></div>
+          <p class="tl-desc">Contributed to 5 Python and 4 web development projects — feature implementation, debugging and performance work — while supporting decisions through data collection and market research. Gained hands-on practice with agile workflows, Git and code review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
+  <!-- FEATURED PROJECT -->
+  <section id="featured" class="slide paper">
+    <div class="inner">
+      <div class="sec-head" data-reveal="1">
+        <h2>Featured Project</h2>
+        <span class="sec-num mono">03 / Final Year Project</span>
+      </div>
+      <div class="featured-card" data-reveal="2">
+        <div>
+          <span class="featured-tag">Final Year Project · In Progress</span>
+          <h3>AI Gym Trainer</h3>
+          <p class="desc">A mobile fitness app that gives users personalized workout and diet plans, tracks progress, and corrects exercise form in real time — with an AI chatbot on hand for guidance along the way.</p>
 
-        // Role rotation
-        const roles = ['AI Engineer', 'ML Developer', 'Software Engineer', 'Data Scientist'];
-        let currentRole = 0;
-        const roleText = document.getElementById('role-text');
+          <div class="p-meta">
+            <div class="row"><b>Problem</b><span>Most home workouts have no one watching your form — small mistakes in posture go uncorrected and turn into injuries over time.</span></div>
+            <div class="row"><b>How it works</b><span>Camera feed → pose landmarks → joint-angle calculation → rule-based form scoring → instant on-screen feedback, live while you train.</span></div>
+            <div class="row"><b>Architecture</b><span>Client-server today: mobile frontend + FastAPI backend + MongoDB. The posture engine is being rebuilt as a standalone React Native module running a TFLite pose model fully on-device, so form correction works offline with zero network round-trip.</span></div>
+          </div>
 
-        setInterval(() => {
-            currentRole = (currentRole + 1) % roles.length;
-            roleText.textContent = roles[currentRole];
-        }, 3000);
+          <div class="chip-row">
+            <span class="chip c-orange">Computer Vision</span>
+            <span class="chip c-coral">MediaPipe Pose</span>
+            <span class="chip c-amber">FastAPI</span>
+            <span class="chip c-plum">MongoDB</span>
+            <span class="chip c-gold">React Native</span>
+            <span class="chip c-orange">On-device TFLite</span>
+          </div>
+          <div class="featured-links">
+            <a href="https://github.com/skd-recall" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.34.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.45-2.7 5.42-5.27 5.71.42.36.78 1.08.78 2.18 0 1.58-.01 2.85-.01 3.24 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg>
+              Source
+            </a>
+          </div>
+        </div>
+        <div class="fyp-visual">
+          <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="var(--orange)" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.9">
+              <line x1="150" y1="40" x2="150" y2="95"/>
+              <line x1="110" y1="95" x2="190" y2="95"/>
+              <line x1="110" y1="95" x2="85" y2="150"/>
+              <line x1="85" y1="150" x2="70" y2="195"/>
+              <line x1="190" y1="95" x2="215" y2="150"/>
+              <line x1="215" y1="150" x2="230" y2="195"/>
+              <line x1="110" y1="95" x2="150" y2="150"/>
+              <line x1="190" y1="95" x2="150" y2="150"/>
+              <line x1="150" y1="150" x2="130" y2="205"/>
+              <line x1="150" y1="150" x2="170" y2="205"/>
+              <line x1="130" y1="205" x2="126" y2="255"/>
+              <line x1="170" y1="205" x2="174" y2="255"/>
+            </g>
+            <g fill="var(--orange-deep)">
+              <circle cx="150" cy="28" r="12"/>
+              <circle cx="110" cy="95" r="6"/><circle cx="190" cy="95" r="6"/>
+              <circle cx="85" cy="150" r="6"/><circle cx="215" cy="150" r="6"/>
+              <circle cx="70" cy="195" r="6"/><circle cx="230" cy="195" r="6"/>
+              <circle cx="150" cy="150" r="6"/>
+              <circle cx="130" cy="205" r="6"/><circle cx="170" cy="205" r="6"/>
+              <circle cx="126" cy="255" r="6"/><circle cx="174" cy="255" r="6"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Header scroll effect
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-lg');
-                header.classList.remove('bg-transparent');
-            } else {
-                header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-lg');
-                header.classList.add('bg-transparent');
-            }
+  <!-- OTHER PROJECTS -->
+  <section id="projects" class="slide">
+    <div class="inner">
+      <div class="sec-head" data-reveal="1">
+        <h2>More Projects</h2>
+        <span class="sec-num mono">04 / Selected Work</span>
+      </div>
+      <div class="carousel-wrap" data-reveal="2">
+        <div class="carousel" id="carousel">
+          <div class="pcard">
+            <span class="pnum mono">01 / Detection System</span>
+            <h3>AI Content &amp; Plagiarism Detection System</h3>
+            <p>A multi-modal academic-integrity engine — three detectors working together instead of one blunt score.</p>
+            <div class="p-meta">
+              <div class="row"><b>AI-text detection</b><span>4-model ensemble (RoBERTa classifier, multi-model perplexity, stylometric &amp; semantic analyzers), calibrated with isotonic regression to cut false positives.</span></div>
+              <div class="row"><b>Plagiarism search</b><span>FAISS semantic search + TF-IDF lexical matching across a 2.5M-sentence, 10GB corpus, with conditional live web search for suspicious lines.</span></div>
+              <div class="row"><b>Paraphrase detection</b><span>5-signal weighted ensemble (semantic, structural, lexical, edit-distance, n-gram) to tell honest paraphrasing from disguised copying.</span></div>
+            </div>
+            <div class="stat-strip">
+              <div class="s"><b>2.5M+</b><span>Sentence Corpus</span></div>
+              <div class="s"><b>&lt;10s</b><span>Per Document</span></div>
+              <div class="s"><b>&lt;5%</b><span>False-Positive Target</span></div>
+            </div>
+            <div class="chip-row"><span class="chip c-plum">RoBERTa</span><span class="chip c-orange">FAISS</span><span class="chip c-coral">FastAPI</span></div>
+          </div>
+          <div class="pcard">
+            <span class="pnum mono">02 / Deep Learning</span>
+            <h3>Housing Price Prediction</h3>
+            <p>Predicting house prices from more than just spreadsheet numbers.</p>
+            <div class="p-meta">
+              <div class="row"><b>Challenge</b><span>Listing photos carry real pricing signal that tabular features alone miss — but images and numbers don't fuse easily.</span></div>
+              <div class="row"><b>Approach</b><span>Fused a ResNet18 CNN over listing images with engineered tabular features in one multimodal model, tuned and evaluated on MAE/RMSE.</span></div>
+              <div class="row"><b>Result</b><span>92% accuracy — a 13% lift over the tabular-only baseline.</span></div>
+            </div>
+            <div class="chip-row"><span class="chip c-orange">TensorFlow</span><span class="chip c-coral">ResNet18</span><span class="chip c-amber">CNN</span></div>
+          </div>
+          <div class="pcard">
+            <span class="pnum mono">03 / ML Pipeline</span>
+            <h3>Titanic Survival Prediction</h3>
+            <p>The classic ML problem, built the way production pipelines actually should be.</p>
+            <div class="p-meta">
+              <div class="row"><b>Challenge</b><span>Messy, partly-missing passenger data that needed to generalize cleanly to unseen records, not just fit a notebook.</span></div>
+              <div class="row"><b>Approach</b><span>Scikit-learn Pipeline + ColumnTransformer for imputation, scaling and one-hot encoding, SelectKBest for feature selection, and GridSearchCV to tune a Random Forest.</span></div>
+              <div class="row"><b>Result</b><span>+10% performance from feature selection alone; final pipeline exported and reusable via pickle.</span></div>
+            </div>
+            <div class="chip-row"><span class="chip c-coral">Scikit-learn</span><span class="chip c-plum">Random Forest</span></div>
+          </div>
+          <div class="pcard">
+            <span class="pnum mono">04 / Computer Vision</span>
+            <h3>Face Mask Detection</h3>
+            <p>Real-time mask / no-mask detection through a live camera feed.</p>
+            <div class="p-meta">
+              <div class="row"><b>Challenge</b><span>Running accurate classification fast enough for live video, not just static images.</span></div>
+              <div class="row"><b>Approach</b><span>Transfer learning on VGG16 with a custom binary classification head, integrated with MediaPipe for real-time face localization before classification.</span></div>
+              <div class="row"><b>Result</b><span>High-accuracy detection running live, ready for deployment on everyday hardware.</span></div>
+            </div>
+            <div class="chip-row"><span class="chip c-amber">VGG16</span><span class="chip c-orange">MediaPipe</span></div>
+          </div>
+          <div class="pcard">
+            <span class="pnum mono">05 / Healthcare ML</span>
+            <h3>Heart Disease Detection</h3>
+            <p>Predicting heart disease risk from clinical patient data.</p>
+            <div class="p-meta">
+              <div class="row"><b>Challenge</b><span>Finding real predictive signal in noisy, correlated clinical features without overfitting a small dataset.</span></div>
+              <div class="row"><b>Approach</b><span>Careful feature selection and preprocessing feeding a tuned Random Forest classifier.</span></div>
+              <div class="row"><b>Result</b><span>88% prediction accuracy on held-out patient data.</span></div>
+            </div>
+            <div class="chip-row"><span class="chip c-gold">Random Forest</span><span class="chip c-plum">Feature Selection</span></div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <span class="carousel-count mono"><span id="cIdx">1</span> / 5</span>
+          <div class="carousel-btns">
+            <button class="cbtn" id="cPrev" aria-label="Previous project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="cbtn" id="cNext" aria-label="Next project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="slide paper">
+    <div class="inner">
+      <div class="contact-grid">
+        <div data-reveal="1">
+          <div class="avail"><span class="pulse"></span>Available for internships &amp; full-time roles</div>
+          <h2>Let's build<br>something.</h2>
+          <p class="lede">Have a project, an internship opening, or just want to talk AI/ML? My inbox is open.</p>
+          <div class="social-row">
+            <a href="https://github.com/skd-recall" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.34.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.45-2.7 5.42-5.27 5.71.42.36.78 1.08.78 2.18 0 1.58-.01 2.85-.01 3.24 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg></a>
+            <a href="https://www.linkedin.com/in/salmankhanduadzai" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a>
+            <a href="mailto:salman@salmank.me" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+          </div>
+        </div>
+        <div class="contact-list" data-reveal="2">
+          <a class="contact-row" href="mailto:salman@salmank.me">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span><span class="t">Email</span><br><span class="v">salman@salmank.me</span></span>
+          </a>
+          <a class="contact-row" href="tel:+923390030493">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92Z"/></svg></span>
+            <span><span class="t">Phone</span><br><span class="v">+92 339 0030493</span></span>
+          </a>
+          <div class="contact-row">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span><span class="t">Location</span><br><span class="v">Peshawar, Pakistan</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-note">
+        <span>© 2026 Salman Khan. Built with HTML, CSS &amp; JS.</span>
+        <span>Software Engineering — CECOS University, 2022–2026</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- section nav + reveal ---------- */
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll('.dotnav button'));
+  var snap = document.getElementById('snap');
+
+  function setActive(id){
+    navBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting && entry.intersectionRatio > 0.55){
+        entry.target.classList.add('in-view');
+        setActive(entry.target.id);
+      }
+    });
+  }, { root: snap, threshold: [0.55] });
+  slides.forEach(function(s){ io.observe(s); });
+
+  navBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById(btn.dataset.target);
+      if(el) el.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'});
+    });
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if(el){
+        e.preventDefault();
+        el.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'});
+      }
+    });
+  });
+
+  /* ---------- carousel ---------- */
+  var carousel = document.getElementById('carousel');
+  var cards = Array.prototype.slice.call(carousel.children);
+  var cIdx = document.getElementById('cIdx');
+  var current = 0;
+
+  function scrollToCard(i){
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    current = i;
+    cards[i].scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', inline: 'start', block: 'nearest'});
+    cIdx.textContent = i + 1;
+  }
+  document.getElementById('cNext').addEventListener('click', function(){ scrollToCard(current + 1); });
+  document.getElementById('cPrev').addEventListener('click', function(){ scrollToCard(current - 1); });
+
+  var cScrollTimer;
+  carousel.addEventListener('scroll', function(){
+    clearTimeout(cScrollTimer);
+    cScrollTimer = setTimeout(function(){
+      var left = carousel.scrollLeft;
+      var closest = 0, min = Infinity;
+      cards.forEach(function(c, i){
+        var d = Math.abs(c.offsetLeft - carousel.offsetLeft - left);
+        if(d < min){ min = d; closest = i; }
+      });
+      current = closest;
+      cIdx.textContent = closest + 1;
+    }, 100);
+  }, { passive: true });
+
+  /* ---------- scroll progress bar ---------- */
+  var progressBar = document.getElementById('progressBar');
+  snap.addEventListener('scroll', function(){
+    var max = snap.scrollHeight - snap.clientHeight;
+    var pct = max > 0 ? (snap.scrollTop / max) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }, { passive: true });
+
+  /* ---------- count-up stats ---------- */
+  var counted = false;
+  var heroSlide = document.getElementById('hero');
+  var countIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting && !counted){
+        counted = true;
+        document.querySelectorAll('.cnum').forEach(function(el){
+          var target = parseInt(el.dataset.count, 10);
+          if(reduceMotion){ el.textContent = target; return; }
+          var startT = performance.now();
+          var dur = 1100;
+          function tick(now){
+            var p = Math.min(1, (now - startT) / dur);
+            var eased = 1 - Math.pow(1-p, 3);
+            el.textContent = Math.round(target * eased);
+            if(p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
         });
+      }
+    });
+  }, { threshold: 0.4 });
+  countIO.observe(heroSlide);
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            if (mobileMenu.style.maxHeight === '0px' || !mobileMenu.style.maxHeight) {
-                mobileMenu.style.maxHeight = '250px';
-                mobileMenu.style.opacity = '1';
-            } else {
-                mobileMenu.style.maxHeight = '0px';
-                mobileMenu.style.opacity = '0';
-            }
-        });
+  /* ---------- card tilt on hover (desktop) ---------- */
+  if(window.matchMedia('(hover:hover)').matches && !reduceMotion){
+    document.querySelectorAll('.pcard, .featured-card').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = 'perspective(700px) rotateX(' + (py*-3.5) + 'deg) rotateY(' + (px*3.5) + 'deg) translateY(-2px)';
+      });
+      card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+    });
+  }
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                // Close mobile menu if open
-                mobileMenu.style.maxHeight = '0px';
-                mobileMenu.style.opacity = '0';
-            });
-        });
+  /* ---------- cursor parallax on hero visual ---------- */
+  var heroVisual = document.querySelector('.hero-visual');
+  if(heroVisual && window.matchMedia('(hover:hover)').matches && !reduceMotion){
+    document.querySelector('.hero').addEventListener('mousemove', function(e){
+      var r = heroVisual.getBoundingClientRect();
+      var px = (e.clientX - (r.left + r.width/2)) / r.width;
+      var py = (e.clientY - (r.top + r.height/2)) / r.height;
+      heroVisual.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)';
+    });
+  }
 
-        // Contact form
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simple form validation
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            if (name && email && subject && message) {
-                alert('Thank you for your message! I\\'ll get back to you soon.');
-                this.reset();
-            } else {
-                alert('Please fill in all fields.');
-            }
-        });
+  /* ---------- pose / neural canvas ---------- */
+  var canvas = document.getElementById('poseCanvas');
+  var ctx = canvas.getContext('2d');
+  var wrap = canvas.parentElement;
 
-        // Active navigation highlighting
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
+  var KP = {
+    head:[0.5,0.07], neckM:[0.5,0.17],
+    lSh:[0.34,0.20], rSh:[0.66,0.20],
+    lEl:[0.24,0.37], rEl:[0.76,0.37],
+    lWr:[0.17,0.53], rWr:[0.83,0.53],
+    hipM:[0.5,0.47], lHip:[0.41,0.48], rHip:[0.59,0.48],
+    lKn:[0.38,0.71], rKn:[0.62,0.71],
+    lAn:[0.36,0.94], rAn:[0.64,0.94]
+  };
+  var BONES = [
+    ['head','neckM'], ['neckM','lSh'], ['neckM','rSh'], ['lSh','rSh'],
+    ['lSh','lEl'], ['lEl','lWr'], ['rSh','rEl'], ['rEl','rWr'],
+    ['neckM','hipM'], ['hipM','lHip'], ['hipM','rHip'],
+    ['lHip','lKn'], ['lKn','lAn'], ['rHip','rKn'], ['rKn','rAn']
+  ];
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
+  var particles = [];
+  function makeParticles(n){
+    particles = [];
+    for(var i=0;i<n;i++){
+      particles.push({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random()-0.5)*0.00035, vy: (Math.random()-0.5)*0.00035,
+        r: 1 + Math.random()*1.6
+      });
+    }
+  }
+  makeParticles(34);
 
-            navLinks.forEach(link => {
-                link.classList.remove('text-blue-600');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-blue-600');
-                }
-            });
-        });
-    </script>
+  var W=0, H=0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function resize(){
+    W = wrap.clientWidth; H = wrap.clientHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W+'px'; canvas.style.height = H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function pad(){
+    var m = Math.min(W,H) * 0.08;
+    return {x:m, y:m, w:W-2*m, h:H-2*m};
+  }
+  function pt(name){
+    var p = pad(); var k = KP[name];
+    return [p.x + k[0]*p.w, p.y + k[1]*p.h];
+  }
+
+  var startTime = performance.now();
+  var assembleDur = 1500;
+  var pulses = [];
+  function spawnPulse(){
+    var bone = BONES[Math.floor(Math.random()*BONES.length)];
+    pulses.push({bone:bone, t:0, speed: 0.012 + Math.random()*0.01});
+  }
+  var pulseTimer = 0;
+
+  function draw(now){
+    var elapsed = now - startTime;
+    ctx.clearRect(0,0,W,H);
+
+    /* background particles */
+    particles.forEach(function(pa){
+      pa.x += pa.vx; pa.y += pa.vy;
+      if(pa.x<0||pa.x>1) pa.vx*=-1;
+      if(pa.y<0||pa.y>1) pa.vy*=-1;
+    });
+    ctx.strokeStyle = 'rgba(23,20,15,0.06)';
+    ctx.lineWidth = 1;
+    for(var i=0;i<particles.length;i++){
+      for(var j=i+1;j<particles.length;j++){
+        var dx=(particles[i].x-particles[j].x)*W, dy=(particles[i].y-particles[j].y)*H;
+        var d = Math.sqrt(dx*dx+dy*dy);
+        if(d < Math.min(W,H)*0.16){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x*W, particles[i].y*H);
+          ctx.lineTo(particles[j].x*W, particles[j].y*H);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.fillStyle = 'rgba(23,20,15,0.16)';
+    particles.forEach(function(pa){
+      ctx.beginPath(); ctx.arc(pa.x*W, pa.y*H, pa.r, 0, Math.PI*2); ctx.fill();
+    });
+
+    /* skeleton assemble progress */
+    var prog = reduceMotion ? 1 : Math.min(1, elapsed / assembleDur);
+    var breathe = reduceMotion ? 0 : Math.sin(elapsed/1400) * (Math.min(W,H)*0.006);
+
+    /* subtle independent limb sway so the pose looks alive, not frozen */
+    var sway = reduceMotion ? 0 : Math.sin(elapsed/900) * (Math.min(W,H)*0.012);
+
+    var BONE_COLORS = ['255,90,31', '255,61,104', '255,162,61', '201,62,0', '122,47,184'];
+    ctx.lineCap = 'round';
+    BONES.forEach(function(b, idx){
+      var boneStart = idx / BONES.length;
+      var localProg = Math.max(0, Math.min(1, (prog - boneStart*0.55) / 0.45));
+      if(localProg <= 0) return;
+      var a = pt(b[0]), c = pt(b[1]);
+      a[1]+=breathe; c[1]+=breathe;
+      if(b[1]==='rWr') c[0]+=sway;
+      if(b[1]==='lWr') c[0]-=sway;
+      var mx = a[0] + (c[0]-a[0])*localProg;
+      var my = a[1] + (c[1]-a[1])*localProg;
+      var col = BONE_COLORS[idx % BONE_COLORS.length];
+      ctx.strokeStyle = 'rgba(' + col + ',0.85)';
+      ctx.lineWidth = 2.6;
+      ctx.beginPath();
+      ctx.moveTo(a[0], a[1]);
+      ctx.lineTo(mx, my);
+      ctx.stroke();
+    });
+
+    /* joints */
+    var JOINT_COLORS = {head:'#C93E00', lWr:'#FF3D68', rWr:'#FF3D68', lAn:'#FFA23D', rAn:'#FFA23D'};
+    Object.keys(KP).forEach(function(name){
+      var p = pt(name); p[1]+=breathe;
+      if(name==='rWr') p[0]+=sway;
+      if(name==='lWr') p[0]-=sway;
+      var jointProg = Math.min(1, prog*1.4);
+      if(jointProg<=0) return;
+      ctx.fillStyle = JOINT_COLORS[name] || '#7A2FB8';
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], name==='head'? 10*jointProg : 4.2*jointProg, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    /* AI-vision detection frame + live joint-angle readout, once assembled */
+    if(prog >= 1){
+      var p = pad();
+      var bx = p.x - p.w*0.06, by = p.y - p.h*0.03, bw = p.w*1.12, bh = p.h*1.06;
+      var bl = 16;
+      ctx.strokeStyle = 'rgba(255,61,104,0.75)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(bx, by+bl); ctx.lineTo(bx, by); ctx.lineTo(bx+bl, by);
+      ctx.moveTo(bx+bw-bl, by); ctx.lineTo(bx+bw, by); ctx.lineTo(bx+bw, by+bl);
+      ctx.moveTo(bx+bw, by+bh-bl); ctx.lineTo(bx+bw, by+bh); ctx.lineTo(bx+bw-bl, by+bh);
+      ctx.moveTo(bx+bl, by+bh); ctx.lineTo(bx, by+bh); ctx.lineTo(bx, by+bh-bl);
+      ctx.stroke();
+
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(255,61,104,0.9)';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('POSE_TRACK · ' + (96 + Math.round(Math.sin(elapsed/700)*3)) + '%', bx, by-6);
+
+      var shP = pt('rSh'), elP = pt('rEl'), wrP = pt('rWr');
+      elP[1]+=breathe; wrP[1]+=breathe; shP[1]+=breathe; wrP[0]+=sway;
+      var v1x = shP[0]-elP[0], v1y = shP[1]-elP[1];
+      var v2x = wrP[0]-elP[0], v2y = wrP[1]-elP[1];
+      var dot = v1x*v2x + v1y*v2y;
+      var mag = Math.sqrt(v1x*v1x+v1y*v1y) * Math.sqrt(v2x*v2x+v2y*v2y);
+      var angle = Math.round(Math.acos(Math.max(-1,Math.min(1,dot/mag))) * 180/Math.PI);
+      ctx.fillStyle = 'rgba(23,20,15,0.75)';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(angle + '°', elP[0]+10, elP[1]);
+    }
+
+    /* neural pulses along bones, after assembly */
+    if(prog >= 1 && !reduceMotion){
+      pulseTimer++;
+      if(pulseTimer > 55){ spawnPulse(); pulseTimer = 0; }
+      pulses.forEach(function(p){ p.t += p.speed; });
+      pulses = pulses.filter(function(p){ return p.t < 1; });
+      pulses.forEach(function(p){
+        var a = pt(p.bone[0]), c = pt(p.bone[1]);
+        a[1]+=breathe; c[1]+=breathe;
+        var x = a[0] + (c[0]-a[0])*p.t;
+        var y = a[1] + (c[1]-a[1])*p.t;
+        ctx.save();
+        ctx.shadowColor = 'rgba(255,90,31,0.9)';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#FF5A1F';
+        ctx.beginPath(); ctx.arc(x,y,3.4,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+})();
+</script>
 </body>
 </html>
